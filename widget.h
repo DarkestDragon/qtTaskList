@@ -4,8 +4,6 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QPushButton>
-#include <QMessageBox>
-#include <QSettings>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }

@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 Widget::Widget(QWidget *parent)
   : QWidget(parent)
@@ -15,10 +16,27 @@ Widget::Widget(QWidget *parent)
   connect(addTaskBtn, SIGNAL(clicked()), this, SLOT(addTaskItem()));
   connect(remTaskBtn, SIGNAL(clicked()), this, SLOT(remTaskItem()));
   connect(listWgt, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(checkTaskItem(QListWidgetItem*)));
+
+  QSettings settings(QSettings::IniFormat, QSettings::UserScope, "NA", "taskList", this);
+
+  settings.beginGroup("GUI");
+  int wdwSizeX = settings.value("sizeX", 320).toInt();
+  int wdwSizeY = settings.value("sizeY", 240).toInt();
+  settings.endGroup();
+
+  this->resize(wdwSizeX, wdwSizeY);
 }
 
 Widget::~Widget()
 {
+  QSettings settings(QSettings::IniFormat, QSettings::UserScope, "NA", "taskList", this);
+
+  settings.beginGroup("GUI");
+  settings.setValue("sizeX", this->width());
+  settings.setValue("sizeY", this->height());
+  settings.endGroup();
+  settings.sync();
+
   delete ui;
 }
 
